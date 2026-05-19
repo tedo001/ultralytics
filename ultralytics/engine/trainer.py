@@ -342,7 +342,10 @@ class BaseTrainer:
 
         if self.world_size > 1:
             self.model = nn.parallel.DistributedDataParallel(
-                self.model, device_ids=[RANK], find_unused_parameters=True, broadcast_buffers=False
+                self.model,
+                device_ids=[RANK],
+                static_graph=bool(self.args.compile),
+                broadcast_buffers=False,
             )
 
         # Batch size
